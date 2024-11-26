@@ -1,68 +1,101 @@
-# :package_description
+# A filament plugin that automatically logs out your users if they are idle.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/niladam/filament-auto-logout.svg?style=flat-square)](https://packagist.org/packages/niladam/filament-auto-logout)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/niladam/filament-auto-logout/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/niladam/filament-auto-logout/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/niladam/filament-auto-logout/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/niladam/filament-auto-logout/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/niladam/filament-auto-logout.svg?style=flat-square)](https://packagist.org/packages/niladam/filament-auto-logout)
 
-<!--delete-->
----
-This repo can be used to scaffold a Filament plugin. Follow these steps to get started:
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Make something great!
----
-<!--/delete-->
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+A small filament plugin that logs out your users if they are idle.
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require :vendor_slug/:package_slug
+composer require niladam/filament-auto-logout
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
-```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
+php artisan vendor:publish --tag="filament-auto-logout-config"
 ```
 
 This is the contents of the published config file:
 
 ```php
+use Carbon\Carbon;
+use Niladam\FilamentAutoLogout\Enums\AutoLogoutPosition;
+
 return [
+    /**
+     * Disable or enable the plugin
+     */
+    'enabled' => env('FILAMENT_AUTO_LOGOUT_ENABLED', true),
+
+    /**
+     * The duration in seconds your users can be idle before being logged out.
+     *
+     * The duration needs to be specified in seconds.
+     *
+     * A sensible default has been set to 15 minutes
+     */
+    'duration_in_seconds' => env('FILAMENT_AUTO_LOGOUT_DURATION_IN_SECONDS', Carbon::SECONDS_PER_MINUTE * 15),
+
+    /**
+     * A notification will be sent to the user before logging out.
+     *
+     * This sets the seconds BEFORE sending out the notification.
+     */
+    'warn_before_in_seconds' => env('FILAMENT_AUTO_LOGOUT_WARN_BEFORE_IN_SECONDS', 30),
+
+    /**
+     * The plugin comes with a small time left box which will display the time left
+     * before the user will be logged out.
+     */
+    'show_time_left' => env('FILAMENT_AUTO_LOGOUT_SHOW_TIME_LEFT', true),
+
+    /**
+     * What should the time left box display before the timer?
+     *
+     * A default has been set to 'Time left:'
+     */
+    'time_left_text' => env('FILAMENT_AUTO_LOGOUT_TIME_LEFT_TEXT', 'Time left:'),
+
+    /**
+     * The position of the time left box.
+     *
+     * Defaults to right.
+     *
+     * Currently only 'right' and 'left' (bottom) are supported
+     */
+    'time_left_position' => env('FILAMENT_AUTO_LOGOUT_TIME_LEFT_POSITION', AutoLogoutPosition::BOTTOM_RIGHT),
 ];
 ```
 
 ## Usage
 
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+use Carbon\Carbon;
+use Niladam\FilamentAutoLogout\FilamentAutoLogoutPlugin;
+
+$panel
+    ->plugins([
+        FilamentAutoLogoutPlugin::make()
+            ->positionLeft()                                // Align the time left box to the left. Defaults to right.
+            ->disableIf(fn () => auth()->id() === 1)        // Disable the user with ID 1
+            ->logoutAfter(Carbon::SECONDS_PER_MINUTE * 5)   // Logout the user after 5 minutes
+            ->withoutWarning()                              // Disable the warning
+            ->withoutTimeLeft()                             // Disable the time left
+            ->timeLeftText('Oh no. Kicking you in...')      // Change the time left text
+    ]);
 ```
 
-## Testing
+### Configuration
 
-```bash
-composer test
-```
 
 ## Changelog
 
@@ -78,7 +111,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [Madalin Tache](https://github.com/niladam)
 - [All Contributors](../../contributors)
 
 ## License
