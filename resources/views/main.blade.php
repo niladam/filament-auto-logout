@@ -2,7 +2,7 @@
     <script src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('filament-auto-logout', 'niladam/filament-auto-logout') }}"></script>
     <form id="auto-logout-form"
           data-auto-logout-enabled="{{ $enabled }}"
-          action="{{ route('filament.app.auth.logout') }}"
+          action="{{ route($route_name) }}"
           data-duration="{{ $duration }}"
           data-warn-before="{{ $warn_before }}"
           data-show-timeleft="{{ $show_time_left }}"

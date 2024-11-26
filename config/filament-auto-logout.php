@@ -46,4 +46,15 @@ return [
      * Currently only 'right' and 'left' (bottom) are supported
      */
     'time_left_position' => env('FILAMENT_AUTO_LOGOUT_TIME_LEFT_POSITION', AutoLogoutPosition::BOTTOM_RIGHT),
+
+    /**
+     * The route name where the logout will be posted.
+     *
+     * Defaults to filament's logout route & controller, but uses a custom route name
+     * to ensure it doesn't conflict with any other logout routes
+     *
+     * You can overwrite this here but ensure that the route accepts a POST request
+     * and handles the logout process entirely.
+     */
+    'auto_logout_route_name' => env('FILAMENT_AUTO_LOGOUT_ROUTE_NAME', 'filament-auto-logout-plugin-form'),
 ];

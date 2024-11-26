@@ -2,16 +2,16 @@
 
 namespace Niladam\FilamentAutoLogout;
 
+use Filament\Http\Controllers\Auth\LogoutController;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
+use Illuminate\Support\Facades\Route;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FilamentAutoLogoutServiceProvider extends PackageServiceProvider
+class AutoLogoutServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'filament-auto-logout';
 
@@ -19,11 +19,6 @@ class FilamentAutoLogoutServiceProvider extends PackageServiceProvider
 
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package->name(static::$name)
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
@@ -44,6 +39,8 @@ class FilamentAutoLogoutServiceProvider extends PackageServiceProvider
         if (file_exists($package->basePath('/../resources/views'))) {
             $package->hasViews(static::$viewNamespace);
         }
+
+        Route::post('auto-logout-plugin-form', LogoutController::class)->name('filament-auto-logout-plugin-form');
     }
 
     public function packageRegistered(): void {}
@@ -69,8 +66,6 @@ class FilamentAutoLogoutServiceProvider extends PackageServiceProvider
     {
         return [
             AlpineComponent::make('filament-auto-logout', __DIR__ . '/../resources/dist/filament-auto-logout.js'),
-            //            Css::make('filament-auto-logout-styles', __DIR__ . '/../resources/dist/filament-auto-logout.css'),
-            //            Js::make('filament-auto-logout-scripts', __DIR__ . '/../resources/dist/filament-auto-logout.js'),
         ];
     }
 }
