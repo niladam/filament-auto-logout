@@ -9,7 +9,7 @@
         "logout if idle",
         "logout if afk",
         "autologout",
-        "filament auto logout",
+        "filament auto logout"
     ],
     "homepage": "https://github.com/niladam/filament-auto-logout",
     "support": {
