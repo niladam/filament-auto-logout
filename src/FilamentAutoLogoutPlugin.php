@@ -25,6 +25,7 @@ class FilamentAutoLogoutPlugin implements Plugin
     public int | Closure $warnBeforeSeconds = 30;
 
     public AutoLogoutPosition | Closure $position = AutoLogoutPosition::BOTTOM_RIGHT;
+
     public ?string $timeleftText = null;
 
     public function getId(): string
