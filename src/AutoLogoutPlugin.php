@@ -10,7 +10,7 @@ use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\View;
 use Niladam\FilamentAutoLogout\Enums\AutoLogoutPosition;
 
-class FilamentAutoLogoutPlugin implements Plugin
+class AutoLogoutPlugin implements Plugin
 {
     use EvaluatesClosures;
 
@@ -57,6 +57,7 @@ class FilamentAutoLogoutPlugin implements Plugin
             'warn_before' => $this->evaluate($this->hasWarning) ? $this->evaluate($this->warnBeforeSeconds) : 0,
             'position' => $this->position->getPosition(),
             'time_left_text' => $this->timeleftText,
+            'route_name' => config('filament-auto-logout.auto_logout_route_name'),
         ])->render();
     }
 

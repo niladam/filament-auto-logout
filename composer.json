@@ -1,6 +1,6 @@
 {
     "name": "niladam/filament-auto-logout",
-    "description": "A filament plugin that automatically logs out your users if they are idle.",
+    "description": "A filament plugin that auto logs out your users if they are idle.",
     "keywords": [
         "laravel",
         "filament-auto-logout",
@@ -44,7 +44,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Niladam\\FilamentAutoLogout\\FilamentAutoLogoutServiceProvider"
+                "Niladam\\FilamentAutoLogout\\AutoLogoutServiceProvider"
             ]
         }
     }

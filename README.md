@@ -1,13 +1,11 @@
-# A filament plugin that automatically logs out your users if they are idle.
+# A filament plugin that auto logs out your users if they are idle. Works with multiple tabs.
+
+<br>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/niladam/filament-auto-logout.svg?style=flat-square)](https://packagist.org/packages/niladam/filament-auto-logout)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/niladam/filament-auto-logout/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/niladam/filament-auto-logout/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/niladam/filament-auto-logout/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/niladam/filament-auto-logout/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/niladam/filament-auto-logout.svg?style=flat-square)](https://packagist.org/packages/niladam/filament-auto-logout)
 
-
-
-A small filament plugin that logs out your users if they are idle.
 
 ## Installation
 
@@ -80,11 +78,11 @@ return [
 
 ```php
 use Carbon\Carbon;
-use Niladam\FilamentAutoLogout\FilamentAutoLogoutPlugin;
+use Niladam\FilamentAutoLogout\AutoLogoutPlugin;
 
 $panel
     ->plugins([
-        FilamentAutoLogoutPlugin::make()
+        AutoLogoutPlugin::make()
             ->positionLeft()                                // Align the time left box to the left. Defaults to right.
             ->disableIf(fn () => auth()->id() === 1)        // Disable the user with ID 1
             ->logoutAfter(Carbon::SECONDS_PER_MINUTE * 5)   // Logout the user after 5 minutes
