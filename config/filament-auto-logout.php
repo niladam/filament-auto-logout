@@ -1,7 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use Niladam\FilamentAutoLogout\Enums\AutoLogoutPosition;
+use Filament\View\PanelsRenderHook;
 
 return [
     /**
@@ -39,22 +39,9 @@ return [
     'time_left_text' => env('FILAMENT_AUTO_LOGOUT_TIME_LEFT_TEXT', 'Time left:'),
 
     /**
-     * The position of the time left box.
+     * Where should the badge be rendered?
      *
-     * Defaults to right.
-     *
-     * Currently only 'right' and 'left' (bottom) are supported
+     * @see https://filamentphp.com/docs/3.x/support/render-hooks#available-render-hooks for a list of supported hooks.
      */
-    'time_left_position' => env('FILAMENT_AUTO_LOGOUT_TIME_LEFT_POSITION', AutoLogoutPosition::BOTTOM_RIGHT),
-
-    /**
-     * The route name where the logout will be posted.
-     *
-     * Defaults to filament's logout route & controller, but uses a custom route name
-     * to ensure it doesn't conflict with any other logout routes
-     *
-     * You can overwrite this here but ensure that the route accepts a POST request
-     * and handles the logout process entirely.
-     */
-    'auto_logout_route_name' => env('FILAMENT_AUTO_LOGOUT_ROUTE_NAME', 'filament-auto-logout-plugin-form'),
+    'location' => env('FILAMENT_AUTO_LOGOUT_LOCATION', PanelsRenderHook::GLOBAL_SEARCH_BEFORE),
 ];
