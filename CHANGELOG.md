@@ -2,6 +2,18 @@
 
 All notable changes to `filament-auto-logout` will be documented in this file.
 
+## 1.0.2 - 2024-11-28
+
+This release converts the code from a custom css with some positioning to a badge.
+
+The badge's location (within the panel) can be changed.
+The badge's color can be changed.
+
+### What's Changed
+
+* Allow dynamic location and color. by @niladam in https://github.com/niladam/filament-auto-logout/pull/5
+  **Full Changelog**: https://github.com/niladam/filament-auto-logout/compare/1.0.1...1.0.2
+
 ## 1.0.1 - 2024-11-26
 
 Rename the plugin to attempt to match Filament's guidelines and simplify it's usages.
