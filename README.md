@@ -26,7 +26,7 @@ This is the contents of the published config file:
 
 ```php
 use Carbon\Carbon;
-use Niladam\FilamentAutoLogout\Enums\AutoLogoutPosition;
+use Filament\View\PanelsRenderHook;
 
 return [
     /**
@@ -64,13 +64,11 @@ return [
     'time_left_text' => env('FILAMENT_AUTO_LOGOUT_TIME_LEFT_TEXT', 'Time left:'),
 
     /**
-     * The position of the time left box.
+     * Where should the badge be rendered?
      *
-     * Defaults to right.
-     *
-     * Currently only 'right' and 'left' (bottom) are supported
+     * @see https://filamentphp.com/docs/3.x/support/render-hooks#available-render-hooks for a list of supported hooks.
      */
-    'time_left_position' => env('FILAMENT_AUTO_LOGOUT_TIME_LEFT_POSITION', AutoLogoutPosition::BOTTOM_RIGHT),
+    'location' => env('FILAMENT_AUTO_LOGOUT_LOCATION', PanelsRenderHook::GLOBAL_SEARCH_BEFORE),
 ];
 ```
 
@@ -78,17 +76,19 @@ return [
 
 ```php
 use Carbon\Carbon;
+use Filament\Support\Colors\Color;
 use Niladam\FilamentAutoLogout\AutoLogoutPlugin;
 
 $panel
     ->plugins([
         AutoLogoutPlugin::make()
-            ->positionLeft()                                // Align the time left box to the left. Defaults to right.
+            ->color(Color::Emerald)                         // Set the color. Defaults to Zinc
             ->disableIf(fn () => auth()->id() === 1)        // Disable the user with ID 1
             ->logoutAfter(Carbon::SECONDS_PER_MINUTE * 5)   // Logout the user after 5 minutes
-            ->withoutWarning()                              // Disable the warning
+            ->withoutWarning()                              // Disable the warning before logging out
             ->withoutTimeLeft()                             // Disable the time left
             ->timeLeftText('Oh no. Kicking you in...')      // Change the time left text
+            ->timeLeftText('')                              // Remove the time left text (displays only countdown)
     ]);
 ```
 

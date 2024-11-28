@@ -5,10 +5,11 @@ namespace Niladam\FilamentAutoLogout;
 use Closure;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\Support\Colors\Color;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\View;
-use Niladam\FilamentAutoLogout\Enums\AutoLogoutPosition;
+use ReflectionClass;
 
 class AutoLogoutPlugin implements Plugin
 {
@@ -24,9 +25,11 @@ class AutoLogoutPlugin implements Plugin
 
     public int | Closure $warnBeforeSeconds = 30;
 
-    public AutoLogoutPosition | Closure $position = AutoLogoutPosition::BOTTOM_RIGHT;
+    public array | Closure $color = Color::Zinc;
 
     public ?string $timeleftText = null;
+
+    private string $location = PanelsRenderHook::GLOBAL_SEARCH_BEFORE;
 
     public function getId(): string
     {
@@ -36,8 +39,8 @@ class AutoLogoutPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel->renderHook(
-            PanelsRenderHook::BODY_END,
-            fn () => $this->renderView()
+            name: $this->getLocation(),
+            hook: fn () => $this->renderView($panel->getLogoutUrl())
         );
     }
 
@@ -47,7 +50,7 @@ class AutoLogoutPlugin implements Plugin
 
     }
 
-    protected function renderView(): string
+    protected function renderView(string $logoutUrl): string
     {
         return View::make('filament-auto-logout::main', [
             'enabled' => $this->evaluate($this->enabled),
@@ -55,9 +58,9 @@ class AutoLogoutPlugin implements Plugin
             'show_time_left' => $this->evaluate($this->showTimeLeft),
             'duration' => $this->evaluate($this->duration),
             'warn_before' => $this->evaluate($this->hasWarning) ? $this->evaluate($this->warnBeforeSeconds) : 0,
-            'position' => $this->position->getPosition(),
             'time_left_text' => $this->timeleftText,
-            'route_name' => config('filament-auto-logout.auto_logout_route_name'),
+            'color' => $this->getColor(),
+            'logout_url' => $logoutUrl,
         ])->render();
     }
 
@@ -111,13 +114,6 @@ class AutoLogoutPlugin implements Plugin
         return $this;
     }
 
-    public function positionLeft(AutoLogoutPosition $position = AutoLogoutPosition::BOTTOM_LEFT): static
-    {
-        $this->position = $position;
-
-        return $this;
-    }
-
     public function logoutAfter(int | Closure $duration): static
     {
         $this->duration = $duration instanceof Closure
@@ -132,5 +128,43 @@ class AutoLogoutPlugin implements Plugin
         $this->timeleftText = $timeLeftText;
 
         return $this;
+    }
+
+    public function color(array | Closure $color = Color::Zinc): static
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    protected function getColor(): array
+    {
+        return $this->evaluate($this->color);
+    }
+
+    public function location(string $location = PanelsRenderHook::GLOBAL_SEARCH_BEFORE): static
+    {
+        $this->location = $this->isValidPanelHook($location)
+            ? $location
+            : PanelsRenderHook::GLOBAL_SEARCH_BEFORE;
+
+        return $this;
+    }
+
+    protected function isValidPanelHook(string $location): bool
+    {
+        static $validLocations = null;
+
+        if ($validLocations === null) {
+            $reflection = new ReflectionClass(PanelsRenderHook::class);
+            $validLocations = array_values($reflection->getConstants());
+        }
+
+        return in_array($location, $validLocations, true);
+    }
+
+    protected function getLocation(): string
+    {
+        return $this->evaluate($this->location);
     }
 }

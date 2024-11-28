@@ -53,7 +53,6 @@
                 },
                 showWarning() {
                     if (!this.warningDisplayed) {
-
                         const totalSeconds = this.warningBefore;
                         const minutes = Math.floor(totalSeconds / 60);
                         const seconds = totalSeconds % 60;
@@ -150,32 +149,38 @@
                 }
             });
 
-            if (!document.getElementById('idle-timeout-element')) {
-                if (form.dataset.showTimeleft === '1') {
-                    const el = document.createElement('div');
-                    el.setAttribute('x-data', '{}');
+            if (form.dataset.showTimeleft === '1') {
+                let el = document.getElementById('idle-timeout-element');
+
+                if (!el) {
+                    el = document.createElement('div');
                     el.id = 'idle-timeout-element';
-
-                    const timeLeftText = form.dataset.timeLeftText || 'Time left: '; // Fallback to default text
-
-                    el.setAttribute(
-                      'x-data',
-                      JSON.stringify({
-                          timeLeftText: timeLeftText, // Pass it into the Alpine scope
-                      })
-                    );
-
-                    const timerDisplay = document.createElement('div');
-                    timerDisplay.id = 'timer-display';
-                    timerDisplay.setAttribute(
-                      'x-text',
-                      'timeLeftText + Math.floor($store.idleTimeoutStore.timeLeftSecs / 60) + "m " + ($store.idleTimeoutStore.timeLeftSecs % 60) + "s"'
-                    );
-                    el.appendChild(timerDisplay);
-
                     document.body.appendChild(el);
-                    Alpine.initTree(el);
                 }
+
+                const timeLeftText = form.dataset.timeLeftText || null;
+
+                el.setAttribute(
+                    'x-data',
+                    JSON.stringify({
+                        timeLeftText: timeLeftText,
+                    })
+                );
+
+                let timerDisplay = el.querySelector('#timer-display');
+
+                if (!timerDisplay) {
+                    timerDisplay = document.createElement('div');
+                    timerDisplay.id = 'timer-display';
+                    el.appendChild(timerDisplay);
+                }
+
+                timerDisplay.setAttribute(
+                    'x-text',
+                    'timeLeftText + Math.floor($store.idleTimeoutStore.timeLeftSecs / 60) + "m " + ($store.idleTimeoutStore.timeLeftSecs % 60) + "s"'
+                );
+
+                Alpine.initTree(el);
             }
         }
     });
