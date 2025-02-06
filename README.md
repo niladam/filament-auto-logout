@@ -22,6 +22,12 @@ You can publish the config file with:
 php artisan vendor:publish --tag="filament-auto-logout-config"
 ```
 
+You can publish the translations:
+
+```bash
+php artisan vendor:publish --tag="filament-auto-logout-translations"
+```
+
 This is the contents of the published config file:
 
 ```php
