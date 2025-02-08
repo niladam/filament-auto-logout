@@ -72,7 +72,7 @@
                             timeMessage += `${seconds} ${this.units.seconds.long}`;
                         }
 
-                        const notificationBody = this.notificationBody.replace(':timeMessage', timeMessage);
+                        const notificationBody = this.notificationBody.replace(':timeleft:', timeMessage);
 
                         new FilamentNotification()
                           .title(this.notificationTitle)

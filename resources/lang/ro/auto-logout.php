@@ -3,7 +3,9 @@
 return [
     'notification' => [
         'title' => 'Sesiunea curenta expiră în curând',
-        'body' => 'Vei fi deconectat în :timeMessage.',
+        // Poti folosi :timeleft: in continutul notificarii.
+        // Va fi inlocuit cu durata pana la deconectare.
+        'body' => 'Vei fi deconectat în :timeleft:',
     ],
 
     'units' => [
