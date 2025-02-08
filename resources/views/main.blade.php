@@ -7,6 +7,9 @@
           data-warn-before="{{ $warn_before }}"
           data-show-timeleft="{{ $show_time_left }}"
           data-time-left-text="{{ $time_left_text }}"
+          data-notification-title="{{ $notification_title }}"
+          data-notification-body="{{ $notification_body }}"
+          data-units='@json($units, JSON_THROW_ON_ERROR)'
           method="POST" style="display: none;">
         @csrf
     </form>

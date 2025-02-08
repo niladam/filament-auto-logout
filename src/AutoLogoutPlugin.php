@@ -47,10 +47,9 @@ class AutoLogoutPlugin implements Plugin
     public function boot(Panel $panel): void
     {
         $this->timeleftText = $this->timeleftText ?? config('filament-auto-logout.time_left_text');
-
     }
 
-    protected function renderView(string $logoutUrl): string
+    protected function renderView(string $logoutUrl): ?string
     {
         return View::make('filament-auto-logout::main', [
             'enabled' => $this->evaluate($this->enabled),
@@ -61,6 +60,9 @@ class AutoLogoutPlugin implements Plugin
             'time_left_text' => $this->timeleftText,
             'color' => $this->getColor(),
             'logout_url' => $logoutUrl,
+            'notification_title' => __('filament-auto-logout::auto-logout.notification.title'),
+            'notification_body' => __('filament-auto-logout::auto-logout.notification.body'),
+            'units' => __('filament-auto-logout::auto-logout.units'),
         ])->render();
     }
 
