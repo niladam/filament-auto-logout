@@ -19,7 +19,9 @@ class AutoLogoutServiceProvider extends PackageServiceProvider
 
     public function configurePackage(Package $package): void
     {
-        $package->name(static::$name)
+        $package
+            ->name(static::$name)
+            ->hasTranslations()
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
@@ -32,14 +34,6 @@ class AutoLogoutServiceProvider extends PackageServiceProvider
             $package->hasConfigFile();
         }
 
-        if (file_exists($package->basePath('/../resources/lang'))) {
-            $package->hasTranslations();
-        }
-
-        if (file_exists($package->basePath('/../resources/views'))) {
-            $package->hasViews(static::$viewNamespace);
-        }
-
         Route::post('auto-logout-plugin-form', LogoutController::class)->name('filament-auto-logout-plugin-form');
     }
 
@@ -47,6 +41,8 @@ class AutoLogoutServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'filament-auto-logout');
+
         // Asset Registration
         FilamentAsset::register(
             $this->getAssets(),

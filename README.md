@@ -15,6 +15,12 @@ You can install the package via composer:
 composer require niladam/filament-auto-logout
 ```
 
+## Install the package
+
+```bash
+php artisan filament-auto-logout:install
+```
+
 
 You can publish the config file with:
 
@@ -74,6 +80,17 @@ return [
 
 ## Usage
 
+### Quick Usage:
+
+```php
+$panel
+    ->plugins([
+        AutoLogoutPlugin::make(),
+    ]);
+```
+
+### Customised Usage
+
 ```php
 use Carbon\Carbon;
 use Filament\Support\Colors\Color;
@@ -92,8 +109,13 @@ $panel
     ]);
 ```
 
-### Configuration
+## Translations
 
+This package has multi-language support. So you will have to first publish the translations using:
+
+```bash
+php artisan vendor:publish --tag="filament-auto-logout-translations"
+```
 
 ## Changelog
 

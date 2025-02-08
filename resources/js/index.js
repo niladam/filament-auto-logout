@@ -15,6 +15,9 @@
                 timeLeftSecs: null,
                 warningDisplayed: false,
                 timer: null,
+                notificationTitle: null,
+                notificationBody: null,
+                units: null,
                 resetCountdown(skipBroadcast = false) {
                     // console.log('Store resetCountdown called, skipBroadcast:', skipBroadcast);
                     this.timeLeftSecs = this.idleDurationSecs;
@@ -59,22 +62,24 @@
 
                         let timeMessage = '';
                         if (minutes > 0) {
-                            timeMessage += `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+                            timeMessage += `${minutes} ${this.units.minutes.long}`;
                         }
 
                         if (seconds > 0 || minutes === 0) {
                             if (minutes > 0) {
                                 timeMessage += ' ';
                             }
-                            timeMessage += `${seconds} second${seconds !== 1 ? 's' : ''}`;
+                            timeMessage += `${seconds} ${this.units.seconds.long}`;
                         }
 
+                        const notificationBody = this.notificationBody.replace(':timeleft:', timeMessage);
+
                         new FilamentNotification()
-                            .title('Your session is about to expire')
-                            .body(`You will be logged out in ${timeMessage}.`)
-                            .danger()
-                            .color('danger')
-                            .send();
+                          .title(this.notificationTitle)
+                          .body(notificationBody)
+                          .danger()
+                          .color('danger')
+                          .send();
 
                         this.warningDisplayed = true;
                     }
@@ -100,6 +105,9 @@
                 store.idleDurationSecs = parseInt(form.dataset.duration, 10);
                 store.warningBefore = parseInt(form.dataset.warnBefore, 10);
                 store.timeLeftSecs = store.idleDurationSecs;
+                store.notificationTitle = form.dataset.notificationTitle || 'Your session is about to expire';
+                store.notificationBody = form.dataset.notificationBody || 'You will be kicked out in :timeMessage';
+                store.units = JSON.parse(form.dataset.units || '{}');
 
                 // console.log('Auto logout enabled.');
                 // console.log('Idle duration:', store.idleDurationSecs, 'seconds');
@@ -176,9 +184,18 @@
                 }
 
                 timerDisplay.setAttribute(
-                    'x-text',
-                    'timeLeftText + Math.floor($store.idleTimeoutStore.timeLeftSecs / 60) + "m " + ($store.idleTimeoutStore.timeLeftSecs % 60) + "s"'
+                  'x-text',
+                  'timeLeftText + " " + (' +
+                  '(Math.floor($store.idleTimeoutStore.timeLeftSecs / 60) > 0) ' +
+                  // If minutes > 0, show `3 min 15 s` (for example)
+                  '? ( Math.floor($store.idleTimeoutStore.timeLeftSecs / 60) + $store.idleTimeoutStore.units.minutes.short + " " + ' +
+                  '($store.idleTimeoutStore.timeLeftSecs % 60) + $store.idleTimeoutStore.units.seconds.short ) ' +
+                  // Otherwise, show only seconds, e.g. `10 s`
+                  ': ( ($store.idleTimeoutStore.timeLeftSecs % 60) + $store.idleTimeoutStore.units.seconds.short )' +
+                  ')'
                 );
+
+
 
                 Alpine.initTree(el);
             }
