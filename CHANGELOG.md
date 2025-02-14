@@ -2,6 +2,18 @@
 
 All notable changes to `filament-auto-logout` will be documented in this file.
 
+## 1.0.4 - 2025-02-14
+
+### What's Changed
+
+* add Arabic translations by @majdghithan in https://github.com/niladam/filament-auto-logout/pull/12
+
+### New Contributors
+
+* @majdghithan made their first contribution in https://github.com/niladam/filament-auto-logout/pull/12
+
+**Full Changelog**: https://github.com/niladam/filament-auto-logout/compare/1.0.3...1.0.4
+
 ## 1.0.3 - 2025-02-08
 
 ### What's Changed
