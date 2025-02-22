@@ -2,6 +2,12 @@
 
 All notable changes to `filament-auto-logout` will be documented in this file.
 
+## 1.0.5 - 2025-02-22
+
+### What's Changed
+
+* Ensure we do not display "null" when timeleft message is empty by @niladam in https://github.com/niladam/filament-auto-logout/pull/13
+
 ## 1.0.4 - 2025-02-14
 
 ### What's Changed
