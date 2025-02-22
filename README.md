@@ -3,7 +3,6 @@
 <br>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/niladam/filament-auto-logout.svg?style=flat-square)](https://packagist.org/packages/niladam/filament-auto-logout)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/niladam/filament-auto-logout/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/niladam/filament-auto-logout/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/niladam/filament-auto-logout.svg?style=flat-square)](https://packagist.org/packages/niladam/filament-auto-logout)
 
 
