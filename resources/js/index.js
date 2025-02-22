@@ -166,7 +166,7 @@
                     document.body.appendChild(el);
                 }
 
-                const timeLeftText = form.dataset.timeLeftText || null;
+                const timeLeftText = form.dataset.timeLeftText || '';
 
                 el.setAttribute(
                     'x-data',
