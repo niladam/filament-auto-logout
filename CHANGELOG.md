@@ -2,6 +2,14 @@
 
 All notable changes to `filament-auto-logout` will be documented in this file.
 
+## 1.0.6 - 2025-03-12
+
+### What's Changed
+
+* Fix plugin not respecting configuration by @niladam in https://github.com/niladam/filament-auto-logout/pull/15
+
+**Full Changelog**: https://github.com/niladam/filament-auto-logout/compare/1.0.5...1.0.6
+
 ## 1.0.5 - 2025-02-22
 
 ### What's Changed
