@@ -2,6 +2,7 @@
 
 namespace Niladam\FilamentAutoLogout;
 
+use Carbon\Carbon;
 use Closure;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
@@ -15,21 +16,21 @@ class AutoLogoutPlugin implements Plugin
 {
     use EvaluatesClosures;
 
-    public bool | Closure $enabled = true;
+    public bool | Closure | null $enabled = null;
 
     public bool | Closure $hasWarning = true;
 
-    public bool | Closure $showTimeLeft = true;
+    public bool | Closure | null $showTimeLeft = null;
 
-    public int | Closure $duration = 900;
+    public int | Closure | null $duration = null;
 
-    public int | Closure $warnBeforeSeconds = 30;
+    public int | Closure | null $warnBeforeSeconds = null;
 
     public array | Closure $color = Color::Zinc;
 
     public ?string $timeleftText = null;
 
-    private string $location = PanelsRenderHook::GLOBAL_SEARCH_BEFORE;
+    public string $location = PanelsRenderHook::GLOBAL_SEARCH_BEFORE;
 
     public function getId(): string
     {
@@ -46,7 +47,14 @@ class AutoLogoutPlugin implements Plugin
 
     public function boot(Panel $panel): void
     {
-        $this->timeleftText = $this->timeleftText ?? config('filament-auto-logout.time_left_text');
+        $this->enabled = $this->enabled ?? config('filament-auto-logout.enabled', true);
+        $this->duration = $this->duration ?? config('filament-auto-logout.duration_in_seconds', Carbon::SECONDS_PER_MINUTE * 5);
+        $this->warnBeforeSeconds = $this->warnBeforeSeconds ?? config('filament-auto-logout.warn_before_in_seconds', 30);
+        $this->showTimeLeft = $this->showTimeLeft ?? config('filament-auto-logout.show_time_left', true);
+        $this->timeleftText = $this->timeleftText ?? config('filament-auto-logout.time_left_text', 'Time left:');
+        $this->location = $this->location === PanelsRenderHook::GLOBAL_SEARCH_BEFORE
+            ? config('filament-auto-logout.location', PanelsRenderHook::GLOBAL_SEARCH_BEFORE)
+            : $this->location;
     }
 
     protected function renderView(string $logoutUrl): ?string
@@ -73,7 +81,6 @@ class AutoLogoutPlugin implements Plugin
 
     public static function get(): static
     {
-        /** @var static $plugin */
         $plugin = filament(app(static::class)->getId());
 
         return $plugin;
@@ -90,7 +97,7 @@ class AutoLogoutPlugin implements Plugin
 
     public function disableIf(Closure $callback): static
     {
-        return $this->enableif((bool) $this->evaluate($callback));
+        return $this->enableIf((bool) $this->evaluate($callback));
     }
 
     public function withoutWarning(): static
@@ -156,7 +163,6 @@ class AutoLogoutPlugin implements Plugin
     protected function isValidPanelHook(string $location): bool
     {
         static $validLocations = null;
-
         if ($validLocations === null) {
             $reflection = new ReflectionClass(PanelsRenderHook::class);
             $validLocations = array_values($reflection->getConstants());
