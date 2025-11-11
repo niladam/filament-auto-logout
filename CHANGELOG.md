@@ -2,6 +2,16 @@
 
 All notable changes to `filament-auto-logout` will be documented in this file.
 
+## 2.0.0 - 2025-11-11
+
+### What's Changed
+
+* Add filament v4 support by @niladam in https://github.com/niladam/filament-auto-logout/pull/23
+* Bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/niladam/filament-auto-logout/pull/16
+* Bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/niladam/filament-auto-logout/pull/19
+
+**Full Changelog**: https://github.com/niladam/filament-auto-logout/compare/1.0.6...2.0.0
+
 ## 1.0.6 - 2025-03-12
 
 ### What's Changed
