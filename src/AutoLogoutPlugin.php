@@ -26,7 +26,9 @@ class AutoLogoutPlugin implements Plugin
 
     public int | Closure | null $warnBeforeSeconds = null;
 
-    public array | Closure $color = Color::Zinc;
+    public array | Closure $color = Color::Stone;
+
+    public ?string $icon = 'heroicon-o-clock';
 
     public ?string $timeleftText = null;
 
@@ -66,7 +68,8 @@ class AutoLogoutPlugin implements Plugin
             'duration' => $this->evaluate($this->duration),
             'warn_before' => $this->evaluate($this->hasWarning) ? $this->evaluate($this->warnBeforeSeconds) : 0,
             'time_left_text' => $this->timeleftText,
-            'color' => $this->getColor(),
+            'color' => $this->color,
+            'icon' => $this->icon,
             'logout_url' => $logoutUrl,
             'notification_title' => __('filament-auto-logout::auto-logout.notification.title'),
             'notification_body' => __('filament-auto-logout::auto-logout.notification.body'),
@@ -146,9 +149,11 @@ class AutoLogoutPlugin implements Plugin
         return $this;
     }
 
-    protected function getColor(): array
+    public function icon(?string $icon): static
     {
-        return $this->evaluate($this->color);
+        $this->icon = $icon;
+
+        return $this;
     }
 
     public function location(string $location = PanelsRenderHook::GLOBAL_SEARCH_BEFORE): static
@@ -163,6 +168,7 @@ class AutoLogoutPlugin implements Plugin
     protected function isValidPanelHook(string $location): bool
     {
         static $validLocations = null;
+
         if ($validLocations === null) {
             $reflection = new ReflectionClass(PanelsRenderHook::class);
             $validLocations = array_values($reflection->getConstants());
