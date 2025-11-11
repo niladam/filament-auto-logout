@@ -2,7 +2,7 @@
 
 namespace Niladam\FilamentAutoLogout;
 
-use Filament\Http\Controllers\Auth\LogoutController;
+use Filament\Auth\Http\Controllers\LogoutController;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Facades\FilamentAsset;

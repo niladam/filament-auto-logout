@@ -6,6 +6,13 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/niladam/filament-auto-logout.svg?style=flat-square)](https://packagist.org/packages/niladam/filament-auto-logout)
 
 
+#### Compatibility
+
+| Package Version                                                | Filament Version                                             | 
+|----------------------------------------------------------------|--------------------------------------------------------------|
+| [v1](https://github.com/niladam/filament-auto-logout/tree/1.x) | [v3](https://filamentphp.com/docs/3.x/panels/installation)   |
+| v2                                                             | [v4](https://filamentphp.com/docs/4.x/introduction/overview) |
+
 ## Installation
 
 You can install the package via composer:
@@ -19,7 +26,6 @@ composer require niladam/filament-auto-logout
 ```bash
 php artisan filament-auto-logout:install
 ```
-
 
 You can publish the config file with:
 
@@ -98,13 +104,14 @@ use Niladam\FilamentAutoLogout\AutoLogoutPlugin;
 $panel
     ->plugins([
         AutoLogoutPlugin::make()
-            ->color(Color::Emerald)                         // Set the color. Defaults to Zinc
-            ->disableIf(fn () => auth()->id() === 1)        // Disable the user with ID 1
-            ->logoutAfter(Carbon::SECONDS_PER_MINUTE * 5)   // Logout the user after 5 minutes
-            ->withoutWarning()                              // Disable the warning before logging out
-            ->withoutTimeLeft()                             // Disable the time left
-            ->timeLeftText('Oh no. Kicking you in...')      // Change the time left text
-            ->timeLeftText('')                              // Remove the time left text (displays only countdown)
+            ->color(Color::Emerald)                             // Set the color. Defaults to Color::Stone
+            ->icon('heroicon-o-arrow-right-start-on-rectangle') // Change the icon. Defaults to 'heroicon-o-clock' 
+            ->disableIf(fn () => auth()->id() === 1)            // Disable the user with ID 1
+            ->logoutAfter(Carbon::SECONDS_PER_MINUTE * 5)       // Logout the user after 5 minutes
+            ->withoutWarning()                                  // Disable the warning before logging out
+            ->withoutTimeLeft()                                 // Disable the time left
+            ->timeLeftText('Oh no. Kicking you in...')          // Change the time left text
+            ->timeLeftText('')                                  // Remove the time left text (displays only countdown)
     ]);
 ```
 
