@@ -2,6 +2,14 @@
 
 All notable changes to `filament-auto-logout` will be documented in this file.
 
+## Support filament v5 - 2026-04-17
+
+### What's Changed
+
+* Allow filament v5 by @niladam in https://github.com/niladam/filament-auto-logout/pull/29
+
+**Full Changelog**: https://github.com/niladam/filament-auto-logout/compare/2.0.0...3.0.0
+
 ## 2.0.0 - 2025-11-11
 
 ### What's Changed
