@@ -12,6 +12,7 @@
 |----------------------------------------------------------------|--------------------------------------------------------------|
 | [v1](https://github.com/niladam/filament-auto-logout/tree/1.x) | [v3](https://filamentphp.com/docs/3.x/panels/installation)   |
 | v2                                                             | [v4](https://filamentphp.com/docs/4.x/introduction/overview) |
+| v3                                                             | [v5](https://filamentphp.com/docs/5.x/introduction/overview) |
 
 ## Installation
 
